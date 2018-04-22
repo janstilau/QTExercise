@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/output">
+        <file>images/Snip20170912_4.png</file>
+        <file>images/Snip20170912_3.png</file>
+        <file>images/Snip20170912_2.png</file>
+        <file>images/Snip20170903_4.png</file>
+        <file>images/Snip20170903_2.png</file>
+    </qresource>
+</RCC>
