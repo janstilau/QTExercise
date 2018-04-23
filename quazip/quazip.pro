@@ -78,54 +78,53 @@ DISTFILES += \
     quazip.pro.user
 
 
+
 defineReplace(libdeclare) {
+
     libname = $$1
-    libpath = $$PWD/$$2
-#    !exists($$libpath): error ("Not existing $$libname")
+    libpath = $${_PRO_FILE_PWD_}/libs/$$1
+    !exists($$libpath): error ("Not existing $$libname")
 
     INCLUDEPATH += $$libpath
+    export(INCLUDEPATH)
     DEPENDPATH += $$libpath
+    export(DEPENDPATH)
 
-    win32:CONFIG(release, debug|release): LIBS += -L$$libpath -l$$libname"_r.lib"
-    else:win32:CONFIG(debug, debug|release): LIBS += -L$$libpath -l$$ibname"_d.lib"
-    else:unix:CONFIG(release, debug|release) LIBS += -L$$libpath -l$$libname"_r.a"
-    else:unix:CONFIG(debug, debug|release) LIBS += -L$$libpath -l$$libname"_d.a"
-    win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$libpath/$$libname"_r.a"
-    else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$libpath/$$libname"_d.a"
-    else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$$libpath/$$libname"_r.lib"
-    else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$libpath/$$libname"_d.lib"
-    else:unix:CONFIG(release, debug|release) PRE_TARGETDEPS += $$libpath/$$libname"_r.lib"
-    else:unix:CONFIG(debug, debug|release) PRE_TARGETDEPS += $$libpath/$$libname"_d.lib"
+    win32:CONFIG(release, debug|release): LIBS += -L$$libpath -l$${libname}_r.lib
+    else:win32:CONFIG(debug, debug|release): LIBS += -L$$libpath -l$${libname}_d.lib
+    else:macx:CONFIG(release, debug|release) LIBS += -L$$libpath -llib$${libname}_r.a
+    else:macx:CONFIG(debug, debug|release) LIBS += -L$$libpath -llib$${libname}_d.a
+    export(LIBS)
+
+    win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$libpath/$${libname}_r.a
+    else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$libpath/$${libname}_d.a
+    else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$$libpath/$${libname}_r.lib
+    else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$libpath/$${libname}_d.lib
+    else:macx:CONFIG(release, debug|release) PRE_TARGETDEPS += $$libpath/lib$${libname}_r.a
+    else:macx:CONFIG(debug, debug|release) PRE_TARGETDEPS += $$libpath/lib$${libname}_d.a
+    export(PRE_TARGETDEPS)
 
     return($$1)
 }
 
-#$$libdeclare(quazip, ../lib/quazip)
+$$libdeclare(quazip)
 
 
-    libname = quazip
-    libpath = ../lib/quazip
-    INCLUDEPATH += libpath
-    DEPENDPATH += libpath
-
-    win32:CONFIG(release, debug|release): LIBS += -L$$libpath -l$$libname"_r.lib"
-    else:win32:CONFIG(debug, debug|release): LIBS += -L$$libpath -l$$ibname"_d.lib"
-    else:unix:CONFIG(release, debug|release) LIBS += -L$$libpath -l$$libname"_r.a"
-    else:unix:CONFIG(debug, debug|release) LIBS += -L$$libpath -l$$libname"_d.a"
-    win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$libpath/$$libname"_r.a"
-    else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$libpath/$$libname"_d.a"
-    else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$$libpath/$$libname"_r.lib"
-    else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$libpath/$$libname"_d.lib"
-    else:unix:CONFIG(release, debug|release) PRE_TARGETDEPS += $$libpath/$$libname"_r.lib"
-    else:unix:CONFIG(debug, debug|release) PRE_TARGETDEPS += $$libpath/$$libname"_d.lib"
-
-message(LIBS)
-message($$LIBS)
-message(PRE_TARGETDEPS)
-message($$PRE_TARGETDEPS)
-
-
-
-
-
+TSFILE = $$absolute_path($$TRANSLATIONS)
+QMFILE = $$shell_path($$dirname(TSFILE)/$${TARGET}.qm)
+QMAKE_PRE_LINK += $$[QT_INSTALL_BINS]/lupdate $$_PRO_FILE_$$escape_expand(\n\t)
+QMAKE_PRE_LINK += $$[QT_INSTALL_BINS]/lrelease $$TSFILE -qm $$QMFILE
+win32{
+    CONFIG(release, debug|release) {
+        TARGET_DIR = $${OUT_PWD}/release/Translations
+    }
+    else {
+        TARGET_DIR = $${OUT_PWD}/debug/Translations
+    }
+} else:macx {
+    TARGET_DIR = $${OUT_PWD}/$${TARGET}.app/Contents/Translations
+}
+TARGET_DIR =  $$shell_path($$TARGET_DIR)
+QMAKE_POST_LINK += $${QMAKE_MKDIR} $${TARGET_DIR}$$escape_expand(\n\t)
+QMAKE_POST_LINK += $${QMAKE_COPY_FILE} $$QMFILE $$shell_path($$TARGET_DIR/$${TARGET}.qm)
 
