@@ -21,19 +21,18 @@ LIBNAMES += \
     qtpropertybrowser \
     quazip
 
-!exists($${_PRO_FILE_PWD_}/../libs) {
-    QMAKE_POST_LINK += $${QMAKE_MKDIR} $$shell_path($${_PRO_FILE_PWD_}/../libs$$escape_expand(\n\t))
-}
-for (libname, LIBNAMES) {
-    win32:CONFIG(release, debug|release): lib = $${OUT_PWD}/../$${libname}/release/$${libname}_r.lib
-    else:win32:CONFIG(debug, debug|release): lib = $${OUT_PWD}/../$${libname}/debug/$${libname}_d.lib
-    else:macx:CONFIG(release, debug|release) lib = $${OUT_PWD}/../$${libname}/lib$${libname}_r.a
-    else:macx:CONFIG(debug, debug|release) lib = $${OUT_PWD}/../$${libname}/lib$${libname}_d.a
-    copyDesDir = $${_PRO_FILE_PWD_}/../libs/$${libname}
-    !exists(copyDesDir) {
-        QMAKE_POST_LINK += $${QMAKE_MKDIR} $$shell_path($${copyDesDir}$$escape_expand(\n\t))
-    }
-    QMAKE_POST_LINK += $${QMAKE_COPY_FILE} $$shell_path($$lib) $$shell_path($${copyDesDir}/$$basename(lib)$$escape_expand(\n\t))
-}
+#!exists($${_PRO_FILE_PWD_}/../libs) {
+#    QMAKE_POST_LINK += $${QMAKE_MKDIR} $$shell_path($${_PRO_FILE_PWD_}/../libs$$escape_expand(\n\t))
+#}
+#for (libname, LIBNAMES) {
+#    win32:CONFIG(release, debug|release): lib = $${OUT_PWD}/../$${libname}/release/$${libname}_r.lib
+#    else:win32:CONFIG(debug, debug|release): lib = $${OUT_PWD}/../$${libname}/debug/$${libname}_d.lib
+#    else:macx:CONFIG(release, debug|release) lib = $${OUT_PWD}/../$${libname}/lib$${libname}_r.a
+#    else:macx:CONFIG(debug, debug|release) lib = $${OUT_PWD}/../$${libname}/lib$${libname}_d.a
+#    copyDesDir = $${_PRO_FILE_PWD_}/../libs/$${libname}
+#    !exists(copyDesDir) {
+#        QMAKE_POST_LINK += $${QMAKE_MKDIR} $$shell_path($${copyDesDir}$$escape_expand(\n\t))
+#    }
+#    QMAKE_POST_LINK += $${QMAKE_COPY_FILE} $$shell_path($$lib) $$shell_path($${copyDesDir}/$$basename(lib)$$escape_expand(\n\t))
+#}
 
-message($$QMAKE_POST_LINK)

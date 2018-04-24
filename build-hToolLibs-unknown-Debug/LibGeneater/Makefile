@@ -248,12 +248,6 @@ first: all
 
 $(TARGET):  $(OBJECTS)  
 	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJECTS) $(OBJCOMP) $(LIBS)
-	mkdir -p /Users/jansti/QTExercise/hToolLibs/LibGeneater/../libs
-	 mkdir -p /Users/jansti/QTExercise/hToolLibs/LibGeneater/../libs/qtpropertybrowser
-	 cp -f /Users/jansti/QTExercise/build-hToolLibs-unknown-Debug/LibGeneater/../qtpropertybrowser/libqtpropertybrowser_d.a /Users/jansti/QTExercise/hToolLibs/LibGeneater/../libs/qtpropertybrowser/libqtpropertybrowser_d.a
-	 mkdir -p /Users/jansti/QTExercise/hToolLibs/LibGeneater/../libs/quazip
-	 cp -f /Users/jansti/QTExercise/build-hToolLibs-unknown-Debug/LibGeneater/../quazip/libquazip_d.a /Users/jansti/QTExercise/hToolLibs/LibGeneater/../libs/quazip/libquazip_d.a
-	
 
 Makefile: ../../hToolLibs/LibGeneater/LibGeneater.pro ../../../Qt5.10.1/5.10.1/clang_64/mkspecs/macx-clang/qmake.conf ../../../Qt5.10.1/5.10.1/clang_64/mkspecs/features/spec_pre.prf \
 		../../../Qt5.10.1/5.10.1/clang_64/mkspecs/qdevice.pri \

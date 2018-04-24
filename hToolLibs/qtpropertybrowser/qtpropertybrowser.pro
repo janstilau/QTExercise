@@ -8,6 +8,7 @@ QT       += widgets
 TARGET = qtpropertybrowser
 TEMPLATE = lib
 CONFIG += staticlib
+DESTDIR = $${_PRO_FILE_PWD_}/../libs/$${TARGET}
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings

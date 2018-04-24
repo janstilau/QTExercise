@@ -3,7 +3,6 @@ CONFIG   += ordered
 
 SUBDIRS += \
     qtpropertybrowser \
-    quazip \
-    LibGeneater
+    quazip
 
 

@@ -313,7 +313,7 @@ DIST          = ../../../Qt5.10.1/5.10.1/clang_64/mkspecs/features/spec_pre.prf 
 		../../hToolLibs/qtpropertybrowser/src/qttreepropertybrowser.cpp \
 		../../hToolLibs/qtpropertybrowser/src/qtvariantproperty.cpp
 QMAKE_TARGET  = qtpropertybrowser_d
-DESTDIR       = 
+DESTDIR       = ../../hToolLibs/libs/qtpropertybrowser/
 TARGET        = libqtpropertybrowser_d.a
 
 ####### Custom Variables
@@ -325,12 +325,13 @@ EXPORT_ARCH_ARGS = $(foreach arch, $(if $(EXPORT_ACTIVE_ARCHS), $(EXPORT_ACTIVE_
 first: all
 ####### Build rules
 
-staticlib: $(TARGET)
+staticlib: ../../hToolLibs/libs/qtpropertybrowser/$(TARGET)
 
-$(TARGET):  $(OBJECTS) $(OBJCOMP) 
-	-$(DEL_FILE) $(TARGET)
+../../hToolLibs/libs/qtpropertybrowser/$(TARGET):  $(OBJECTS) $(OBJCOMP) 
+	@test -d ../../hToolLibs/libs/qtpropertybrowser/ || mkdir -p ../../hToolLibs/libs/qtpropertybrowser/
+	-$(DEL_FILE) ../../hToolLibs/libs/qtpropertybrowser/$(TARGET)
 	$(AR) $(DESTDIR)$(TARGET) $(OBJECTS)
-	$(RANLIB) $(TARGET)
+	$(RANLIB) ../../hToolLibs/libs/qtpropertybrowser/$(TARGET)
 
 
 Makefile: ../../hToolLibs/qtpropertybrowser/qtpropertybrowser.pro ../../../Qt5.10.1/5.10.1/clang_64/mkspecs/macx-clang/qmake.conf ../../../Qt5.10.1/5.10.1/clang_64/mkspecs/features/spec_pre.prf \
@@ -714,7 +715,7 @@ qmake: FORCE
 qmake_all: FORCE
 
 
-all: Makefile $(TARGET)
+all: Makefile ../../hToolLibs/libs/qtpropertybrowser/$(TARGET)
 
 dist: distdir FORCE
 	(cd `dirname $(DISTDIR)` && $(TAR) $(DISTNAME).tar $(DISTNAME) && $(COMPRESS) $(DISTNAME).tar) && $(MOVE) `dirname $(DISTDIR)`/$(DISTNAME).tar.gz . && $(DEL_FILE) -r $(DISTDIR)
@@ -734,7 +735,7 @@ clean: compiler_clean
 
 
 distclean: clean 
-	-$(DEL_FILE) $(TARGET) 
+	-$(DEL_FILE) ../../hToolLibs/libs/qtpropertybrowser/$(TARGET) 
 	-$(DEL_FILE) Makefile
 
 
