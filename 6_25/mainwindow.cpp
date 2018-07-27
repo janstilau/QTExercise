@@ -6,6 +6,7 @@
 #include <map>
 #include <set>
 #include <QDebug>
+#include <math.h>
 
 using namespace std;
 
@@ -252,17 +253,147 @@ bool check_is_valid_order(queue<int> &order)
 
 }
 
+
+int wiggleMaxLength(vector<int>& nums) {
+
+    if (nums.size() <= 1) { return nums.size(); }
+
+    int count = 1;
+    int preNum, currentNum;
+    preNum = nums[0];
+    int state = 0;
+    for (int i = 1; i < nums.size(); ++i) {
+        currentNum = nums[i];
+        if (currentNum == preNum) { continue; }
+        if (currentNum > preNum) {
+            if (state == 0 || state == -1) {
+                state = 1;
+                ++count;
+            }
+        } else {
+            if (state == 0 || state == 1) {
+                state = -1;
+                ++count;
+            }
+        }
+        preNum = currentNum;
+    }
+
+    return count;
+}
+
+string removeKdigits(string num, int k) {
+    if (num.size() == 1) {
+        return k == 1? "0": num;
+    }
+    char pre, current;
+    for (int i = 1; i < num.size() && k; ++i) {
+        pre = num[i - 1];
+        current = num[i];
+        if (pre == current) { continue; }
+        num[i] = min(pre, current);
+        num[i - 1] = 'X';
+        --k;
+    }
+
+    string result;
+    int index = 0;
+    while ((num[index] == '0' || num[index] == 'X') && index < num.size()) {
+        ++index;
+    }
+
+    while (index < num.size()) {
+        if (num[index] != 'X') {
+            result.push_back(num[index]);
+        }
+        ++index;
+
+    }
+    if (!result.size()) { result = "0";}
+    return result;
+}
+
+int mypow(int exponent) {
+    int result = 1;
+    while (exponent--) {
+        result *= 2;
+    }
+    return result;
+}
+
+vector<vector<int>> subsets(vector<int>& nums) {
+
+    int size = nums.size();
+    int max = mypow(size) - 1;
+    vector<vector<int>> result;
+    for (int i = 0; i <= max; ++i) {
+        vector<int> sequence;
+        for(int j = 0; j < size; ++j) {
+            bool exist = (i >> j) & 0x01;
+            if (exist) {
+                sequence.push_back(nums[j]);
+            }
+        }
+        result.push_back(sequence);
+    }
+    return result;
+}
+
+vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+    sort(nums.begin(), nums.end());
+    set<vector<int>> temp;
+
+    int size = nums.size();
+    int max = 1 << size;
+    vector<vector<int>> result;
+    for (int i = 0; i <= max; ++i) {
+        vector<int> sequence;
+        for(int j = 0; j < size; ++j) {
+            bool exist = (i >> j) & 0x01;
+            if (exist) {
+                sequence.push_back(nums[j]);
+            }
+        }
+        if (temp.find(sequence) == temp.end()) {
+            temp.insert(sequence);
+            result.push_back(sequence);
+        }
+    }
+    return result;
+}
+
+vector<vector<int>> combinationSum2(vector<int>& nums, int target) {
+    sort(nums.begin(), nums.end());
+    int size = nums.size();
+    int max = 1 << size;
+    vector<vector<int>> result;
+    set<vector<int>> temp;
+    for (int i = 0; i <= max; ++i) {
+        vector<int> sequence;
+        int sum = 0;
+        for(int j = 0; j < size; ++j) {
+            bool exist = (i >> j) & 0x01;
+            if (exist) {
+                sequence.push_back(nums[j]);
+                sum += nums[j];
+                if (sum > target) { break; }
+            }
+        }
+        if (sum == target) {
+            if (temp.find(sequence) == temp.end() ) {
+                temp.insert(sequence);
+                result.push_back(sequence);
+            }
+        }
+    }
+    return result;
+}
+
+
 void MainWindow::on_pushButton_clicked()
 {
-    MinStack stack;
-    stack.push(INT_MAX - 1);
-    stack.push(INT_MAX - 1);
-    stack.push(INT_MAX);
-    stack.pop();
-    stack.pop();
-    stack.pop();
-    stack.push(INT_MAX);
-    stack.top();
+    vector<int> nums = {14,6,25,9,30,20,33,34,28,30,16,12,31,9,9,12,34,16,25,32,8,7,30,12,33,20,21,29,24,17,27,34,11,17,30,6,32,21,27,17,16,8,24,12,12,28,11,33,10,32,22,13,34,18,12                     };
+    combinationSum2(nums, 27);
 }
 
 
